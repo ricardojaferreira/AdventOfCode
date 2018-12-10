@@ -38,7 +38,7 @@ public class Main {
 
         DayFour day4 = new DayFour(myList);
         day4.printTreeMap();
-        day4.getSleepingGuardAndMinute();
+        day4.guardSleepingMoreDuringMinute();
 
 
     }

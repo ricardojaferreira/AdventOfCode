@@ -45,47 +45,7 @@ public class DayFour {
     }
 
     public void getSleepingGuardAndMinute() {
-        Map<Integer, List<Integer>> mapOfShifts = new HashMap<>();
-
-        Set s = this.orderedShifts.entrySet();
-        Iterator i = s.iterator();
-        int guardId = -1;
-        String lastEntry = "";
-        while (i.hasNext()) {
-            Map.Entry m = (Map.Entry) i.next();
-            GregorianCalendar date = (GregorianCalendar) m.getKey();
-            String value = (String) m.getValue();
-
-            if (value.contains("#")) {
-               guardId = Integer.parseInt(value.substring(
-                       value.indexOf('#')+1,
-                       value.indexOf(
-                               ' ',
-                               value.indexOf('#')
-                       )
-               ));
-               continue;
-            }
-            if (value.contains("asleep") && !lastEntry.contains("asleep")) {
-                if (mapOfShifts.containsKey(guardId)) {
-                    mapOfShifts.get(guardId).add(date.get(Calendar.MINUTE));
-                } else {
-                    List<Integer> list = new ArrayList<>();
-                    list.add(date.get(Calendar.MINUTE));
-                    mapOfShifts.put(guardId,list);
-                }
-            }
-
-            if (value.contains("up") && !lastEntry.contains("up")) {
-                int fallAsleepAt = mapOfShifts.get(guardId).get(mapOfShifts.get(guardId).size()-1);
-                int wakesUp = date.get(Calendar.MINUTE);
-                while(fallAsleepAt<wakesUp-1) {
-                    mapOfShifts.get(guardId).add(++fallAsleepAt);
-                }
-            }
-            lastEntry = value;
-        }
-
+        Map<Integer, List<Integer>> mapOfShifts = this.getMapOfShifts();
         System.out.println(mapOfShifts.toString());
 
         int sleepingCount = 0;
@@ -112,5 +72,78 @@ public class DayFour {
 //        System.out.println("Best Time: " + bestTime);
         System.out.println("Answer: " + sleepingGuardId*bestTime);
 
+    }
+
+    public void guardSleepingMoreDuringMinute() {
+        Map<Integer, List<Integer>> mapOfShifts = this.getMapOfShifts();
+        Map<String,Integer> guardVsMinuteSleeping = new HashMap<>();
+        int minute = 0;
+        while (minute <= 59) {
+            for(Map.Entry<Integer, List<Integer>> entry: mapOfShifts.entrySet()){
+                List<Integer> value = entry.getValue();
+                guardVsMinuteSleeping.put(minute+"_"+entry.getKey(),Collections.frequency(value,minute));
+            }
+            minute++;
+        }
+
+        String minuteGuard = "";
+        int count = 0;
+        for(Map.Entry<String, Integer> entry:guardVsMinuteSleeping.entrySet()) {
+            if (count<=entry.getValue()) {
+               count = entry.getValue();
+               minuteGuard = entry.getKey();
+            }
+        }
+
+        int minuteSleeping = Integer.parseInt(minuteGuard.substring(0,minuteGuard.indexOf("_")));
+        int guardId = Integer.parseInt(minuteGuard.substring(minuteGuard.indexOf("_")+1));
+        System.out.println("Answer: " + (guardId*minuteSleeping));
+
+    }
+
+
+    private Map<Integer, List<Integer>> getMapOfShifts() {
+        Map<Integer, List<Integer>> mapOfShifts = new HashMap<>();
+
+        Set s = this.orderedShifts.entrySet();
+        Iterator i = s.iterator();
+        int guardId = -1;
+        String lastEntry = "";
+        while (i.hasNext()) {
+            Map.Entry m = (Map.Entry) i.next();
+            GregorianCalendar date = (GregorianCalendar) m.getKey();
+            String value = (String) m.getValue();
+
+            if (value.contains("#")) {
+                guardId = Integer.parseInt(value.substring(
+                        value.indexOf('#')+1,
+                        value.indexOf(
+                                ' ',
+                                value.indexOf('#')
+                        )
+                ));
+                continue;
+            }
+            if (value.contains("asleep") && !lastEntry.contains("asleep")) {
+                if (mapOfShifts.containsKey(guardId)) {
+                    mapOfShifts.get(guardId).add(date.get(Calendar.MINUTE));
+                } else {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(date.get(Calendar.MINUTE));
+                    mapOfShifts.put(guardId,list);
+                }
+            }
+
+            if (value.contains("up") && !lastEntry.contains("up")) {
+                int fallAsleepAt = mapOfShifts.get(guardId).get(mapOfShifts.get(guardId).size()-1);
+                int wakesUp = date.get(Calendar.MINUTE);
+                while(fallAsleepAt<wakesUp-1) {
+                    mapOfShifts.get(guardId).add(++fallAsleepAt);
+                }
+            }
+            lastEntry = value;
+        }
+
+        return mapOfShifts;
     }
 }
