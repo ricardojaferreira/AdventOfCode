@@ -1,7 +1,4 @@
-import ProcessingInputs.DayFour;
-import ProcessingInputs.DayOne;
-import ProcessingInputs.DayThree;
-import ProcessingInputs.DayTwo;
+import ProcessingInputs.*;
 import utils.ReadFiles;
 
 import java.util.List;
@@ -36,9 +33,12 @@ public class Main {
 //
 //        System.out.println("Id is: " + id);
 
-        DayFour day4 = new DayFour(myList);
-        day4.printTreeMap();
-        day4.guardSleepingMoreDuringMinute();
+//        DayFour day4 = new DayFour(myList);
+//        day4.printTreeMap();
+//        day4.guardSleepingMoreDuringMinute();
+
+        DayFive day5 = new DayFive(myList);
+        day5.processPolarities();
 
 
     }
