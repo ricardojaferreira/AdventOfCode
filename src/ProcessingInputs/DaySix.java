@@ -39,8 +39,26 @@ public class DaySix {
     }
 
     public void getMaxNotInfiniteArea() {
-        Map<Integer, String> myMap = this.giveIdsToCoordinates();
-        List<Integer> maxXY = getMaxXandMaxY(myMap);
-        System.out.println(maxXY.toString());
+        Map<Integer, String> idMap = this.giveIdsToCoordinates();
+        List<Integer> maxXY = getMaxXandMaxY(idMap);
+
+        List<List<String>> manhattanMatrix = new ArrayList<>(maxXY.get(0));
+
+        idMap.forEach((key, value) -> {
+            int x = Integer.parseInt(value.substring(0, value.indexOf(',')));
+            int y = Integer.parseInt(value.substring(value.indexOf(',') + 2));
+
+            for (int i = 0; i < maxXY.get(0); i++) {
+                List<String> manhattanLine = new ArrayList<>();
+                for (int j = 0; j < maxXY.get(1); j++) {
+                    int distance = Math.abs(x-i)+Math.abs(y-j);
+                    manhattanLine.add(j, key+"-"+distance);
+                }
+                manhattanMatrix.add(i, manhattanLine);
+            }
+        });
+
+
+        System.out.println(manhattanMatrix.toString());
     }
 }

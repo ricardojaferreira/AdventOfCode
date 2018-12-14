@@ -13,7 +13,7 @@ public class Main {
 
 
         System.out.println("---------------------------------");
-        System.out.println("Hello Welcome to the first puzzle");
+        System.out.println("Hello Welcome to ");
         System.out.print("Choose your input: ");
         fileName = s.nextLine();
         System.out.println("File to open is: " + fileName);
