@@ -37,8 +37,8 @@ public class Main {
 //        day4.printTreeMap();
 //        day4.guardSleepingMoreDuringMinute();
 
-        DayFive day5 = new DayFive(myList);
-        day5.calculateMinumumPolymers();
+        DaySix day6 = new DaySix(myList);
+        day6.getMaxNotInfiniteArea();
 
 
     }
