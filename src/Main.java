@@ -38,7 +38,7 @@ public class Main {
 //        day4.guardSleepingMoreDuringMinute();
 
         DayFive day5 = new DayFive(myList);
-        day5.processPolarities();
+        day5.calculateMinumumPolymers();
 
 
     }
